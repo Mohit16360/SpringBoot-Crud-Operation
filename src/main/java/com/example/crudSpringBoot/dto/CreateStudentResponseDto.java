@@ -2,7 +2,7 @@ package com.example.crudSpringBoot.dto;
 
 import java.time.LocalDateTime;
 
-public class StudentResponseDto {
+public class CreateStudentResponseDto {
 
     private Long id;
     private String name;
