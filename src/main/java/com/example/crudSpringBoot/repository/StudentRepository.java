@@ -14,6 +14,8 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
     List<Student> findByDeletedIsFalse();
 
+    Boolean existsByEmail(String email);
+
     // I do not need to override all the method provided by jpaRepo the spring jpa provide their implementation at the runtime
 
 

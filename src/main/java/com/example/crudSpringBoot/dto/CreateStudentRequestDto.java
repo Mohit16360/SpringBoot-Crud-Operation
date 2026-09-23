@@ -9,10 +9,10 @@ public class CreateStudentRequestDto {
 
     @NotNull(message = "Age is required")
     @Min(value = 18, message = "Student must be 18 year old")
-    private int age;
+    private Integer age;
 
-    @NotEmpty(message = "Roll is required")
-    private int  roll_no;
+    @NotNull(message = "Roll is required")
+    private Integer  roll_no;
 
     @NotBlank(message = "Student name cannot be blank")
     @Email(message = "Student email must be valid")
@@ -29,19 +29,19 @@ public class CreateStudentRequestDto {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public int getRoll_no() {
+    public Integer getRoll_no() {
         return roll_no;
     }
 
-    public void setRoll_no(int roll_no) {
+    public void setRoll_no(Integer roll_no) {
         this.roll_no = roll_no;
     }
 
@@ -49,7 +49,7 @@ public class CreateStudentRequestDto {
         return subject;
     }
 
-    public void setSubject() {
+    public void setSubject(String subject) {
         this.subject = subject;
     }
 

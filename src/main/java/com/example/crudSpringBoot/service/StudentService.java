@@ -5,6 +5,8 @@ import com.example.crudSpringBoot.dto.CreateStudentResponseDto;
 import com.example.crudSpringBoot.dto.UpdateStudentRequestDto;
 import com.example.crudSpringBoot.dto.UpdateStudentResponseDto;
 import com.example.crudSpringBoot.entity.Student;
+import com.example.crudSpringBoot.exception.DuplicateResourceException;
+import com.example.crudSpringBoot.exception.ResourceNotFoundException;
 import com.example.crudSpringBoot.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,15 +28,14 @@ public class StudentService {
     public CreateStudentResponseDto createStudent(CreateStudentRequestDto studentRequestDto) {
 
         Student student = mapDtoToEntity(studentRequestDto);
-        student.setCretaedAt(LocalDateTime.now());
-        student.setUpdatedAt(LocalDateTime.now());
+
+        if(emailExists(student)) {
+            throw new DuplicateResourceException("Student with email "+ student.getEmail()+" already exists");
+        }
+
         Student studentResp = studentRepository.save(student);
 
-
-
         return MapEntityToDto(studentResp);
-
-
 
     }
 
@@ -42,11 +43,22 @@ public class StudentService {
 
 
     public CreateStudentResponseDto getStudent(Long id) {
-        Optional<Student> studentResp = studentRepository.findByIdAndDeletedIsFalse(id);
-        if(studentResp.isPresent()) {
-            return MapEntityToDto(studentResp.get());
-        }
-        return null;
+//        Optional<Student> studentResp = studentRepository.findByIdAndDeletedIsFalse(id);
+//
+//        if(studentResp.isPresent()) {
+//            return MapEntityToDto(studentResp.get());
+//        }
+//        return  null;
+//
+//        return MapEntityToDto(studentResp.get()) ;
+
+        Student student = studentRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Student with id "+id+" not found"));
+        return MapEntityToDto(student);
+
+
     }
 
 
@@ -134,6 +146,9 @@ public class StudentService {
         student.setAge(studentRequestDto.getAge());
         student.setName(studentRequestDto.getName());
 
+        student.setCretaedAt(LocalDateTime.now());
+        student.setUpdatedAt(LocalDateTime.now());
+
         return student;
 
     }
@@ -169,6 +184,11 @@ public class StudentService {
         studentResponseDto.setUpdatedAt(student.getUpdatedAt());
 
         return  studentResponseDto;
+    }
+
+
+    private boolean emailExists(Student student) {
+        return studentRepository.existsByEmail(student.getEmail());
     }
 
 
