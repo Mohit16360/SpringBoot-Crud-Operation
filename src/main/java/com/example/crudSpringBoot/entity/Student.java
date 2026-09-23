@@ -14,9 +14,9 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private int age;
+    private Integer age;
     private String email;
-    private int  roll_no;
+    private Integer  roll_no;
     private String subject;
     private boolean deleted;
     private LocalDateTime cretaedAt;
@@ -38,11 +38,11 @@ public class Student {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -54,11 +54,11 @@ public class Student {
         this.email = email;
     }
 
-    public int getRoll_no() {
+    public Integer getRoll_no() {
         return roll_no;
     }
 
-    public void setRoll_no(int roll_no) {
+    public void setRoll_no(Integer roll_no) {
         this.roll_no = roll_no;
     }
 

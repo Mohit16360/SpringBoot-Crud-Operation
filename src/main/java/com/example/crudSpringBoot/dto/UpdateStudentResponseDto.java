@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 public class UpdateStudentResponseDto {
     private Long id;
     private String name;
-    private int age;
+    private Integer age;
     private String email;
-    private int  roll_no;
+    private Integer  roll_no;
     private String subject;
     private String message;
     private LocalDateTime updatedAt;
@@ -28,11 +28,11 @@ public class UpdateStudentResponseDto {
         this.name = name;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -44,11 +44,11 @@ public class UpdateStudentResponseDto {
         this.email = email;
     }
 
-    public int getRoll_no() {
+    public Integer getRoll_no() {
         return roll_no;
     }
 
-    public void setRoll_no(int roll_no) {
+    public void setRoll_no(Integer roll_no) {
         this.roll_no = roll_no;
     }
 

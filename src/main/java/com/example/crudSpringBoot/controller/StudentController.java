@@ -7,6 +7,7 @@ import com.example.crudSpringBoot.dto.UpdateStudentRequestDto;
 import com.example.crudSpringBoot.dto.UpdateStudentResponseDto;
 import com.example.crudSpringBoot.entity.Student;
 import com.example.crudSpringBoot.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +31,12 @@ public class StudentController {
 
 
     //create students
-    @PostMapping("/create")
-    public ResponseEntity<CreateStudentResponseDto> createStudent(@RequestBody CreateStudentRequestDto studentRequestDto) {
+    @PostMapping
+    public ResponseEntity<CreateStudentResponseDto> createStudent(
+            @Valid @RequestBody CreateStudentRequestDto studentRequestDto) {
 
         CreateStudentResponseDto createdStudent = studentService.createStudent(studentRequestDto);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdStudent);
@@ -43,14 +46,9 @@ public class StudentController {
 
 
     //read one student
-    @GetMapping("/get")
-    public ResponseEntity<CreateStudentResponseDto> getStudent(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<CreateStudentResponseDto> getStudent(@PathVariable Long id) {
         CreateStudentResponseDto studentResp = studentService.getStudent(id);
-
-        if(studentResp == null){
-            return ResponseEntity.
-                    status(HttpStatus.NOT_FOUND).body(null);
-        }
 
         return ResponseEntity.
                 status(HttpStatus.OK).
@@ -60,13 +58,13 @@ public class StudentController {
 
 
     //get all
-   @GetMapping("/getAll")
+   @GetMapping
     public ResponseEntity<List<CreateStudentResponseDto>> getAll() {
         List<CreateStudentResponseDto> studentListResp = studentService.getAll();
-       if(studentListResp.isEmpty()){
-           return ResponseEntity.
-                   status(HttpStatus.NOT_FOUND).body(null);
-       }
+//       if(studentListResp.isEmpty()){
+//           return ResponseEntity.
+//                   status(HttpStatus.NOT_FOUND).body(null);
+//       } empty response is valid in this case
        return ResponseEntity.
                status(HttpStatus.OK).
                body(studentListResp);
@@ -75,7 +73,7 @@ public class StudentController {
 
 
     //update student
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<UpdateStudentResponseDto> UpdateStudent(@RequestParam Long id,
                                                                  @RequestBody UpdateStudentRequestDto studentReq) {
         UpdateStudentResponseDto studentResp =
@@ -92,13 +90,11 @@ public class StudentController {
 
 
     //delete student
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<String> deleteStudent(@RequestParam Long id){
-        boolean isdeleted = studentService.deletedStudent(id);
-        if(!isdeleted) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok("Record Deleted");
+        studentService.deletedStudent(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
@@ -107,11 +103,9 @@ public class StudentController {
 
     @PatchMapping("/delete-soft")
     public  ResponseEntity<String> deletestudentSoftly(@RequestParam Long id) {
-        Boolean isDeleted = studentService.deleteStudentSoft(id);
-        if(!isDeleted) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok("Record Deleted");
+        studentService.deleteStudentSoft(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
