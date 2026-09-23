@@ -1,0 +1,40 @@
+package com.example.crudSpringBoot.dto;
+
+public class UpdateStudentRequestDto {
+    private String name;
+    private int age;
+    private int  roll_no;
+    private String subject;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getRoll_no() {
+        return roll_no;
+    }
+
+    public void setRoll_no(int roll_no) {
+        this.roll_no = roll_no;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+}
