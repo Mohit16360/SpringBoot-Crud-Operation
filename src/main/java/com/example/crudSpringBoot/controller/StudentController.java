@@ -61,10 +61,10 @@ public class StudentController {
    @GetMapping
     public ResponseEntity<List<CreateStudentResponseDto>> getAll() {
         List<CreateStudentResponseDto> studentListResp = studentService.getAll();
-       if(studentListResp.isEmpty()){
-           return ResponseEntity.
-                   status(HttpStatus.NOT_FOUND).body(null);
-       }
+//       if(studentListResp.isEmpty()){
+//           return ResponseEntity.
+//                   status(HttpStatus.NOT_FOUND).body(null);
+//       } empty response is valid in this case
        return ResponseEntity.
                status(HttpStatus.OK).
                body(studentListResp);
@@ -92,11 +92,9 @@ public class StudentController {
     //delete student
     @DeleteMapping
     public ResponseEntity<String> deleteStudent(@RequestParam Long id){
-        boolean isdeleted = studentService.deletedStudent(id);
-        if(!isdeleted) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok("Record Deleted");
+        studentService.deletedStudent(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
@@ -105,11 +103,9 @@ public class StudentController {
 
     @PatchMapping("/delete-soft")
     public  ResponseEntity<String> deletestudentSoftly(@RequestParam Long id) {
-        Boolean isDeleted = studentService.deleteStudentSoft(id);
-        if(!isDeleted) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok("Record Deleted");
+        studentService.deleteStudentSoft(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 

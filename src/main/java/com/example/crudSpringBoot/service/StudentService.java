@@ -78,56 +78,56 @@ public class StudentService {
 
 
     public UpdateStudentResponseDto updateStudent(Long id, UpdateStudentRequestDto studentReq) {
-        Optional<Student> existingStudent =
-                studentRepository.findByIdAndDeletedIsFalse(id);
+        Student existingStudent =
+                studentRepository.findByIdAndDeletedIsFalse(id).orElseThrow(
+                        () ->  new ResourceNotFoundException("Student with id "+id+" not found"));
 
-        if(existingStudent.isEmpty()) {
-            return null;
-        }
+//        if(existingStudent.isEmpty()) {
+//            return null;
+//        }
 
-        Student studentTosave = existingStudent.get();
 
-        studentTosave.setName(studentReq.getName());
-        studentTosave.setAge(studentReq.getAge());
-        studentTosave.setRoll_no(studentReq.getRoll_no());
-        studentTosave.setSubject(studentReq.getSubject());
-        studentTosave.setUpdatedAt(LocalDateTime.now());
+        existingStudent.setName(studentReq.getName());
+        existingStudent.setAge(studentReq.getAge());
+        existingStudent.setRoll_no(studentReq.getRoll_no());
+        existingStudent.setSubject(studentReq.getSubject());
+        existingStudent.setUpdatedAt(LocalDateTime.now());
 
-        Student savedStudent =  studentRepository.save(studentTosave);
+        Student savedStudent =  studentRepository.save(existingStudent);
 
         return mapToUpdateDto(savedStudent);
 
     }
 
 
-    public Boolean deletedStudent(Long id) {
-        Boolean isStudent = studentRepository.existsById(id);
-        if(!isStudent) return false;
+    public void deletedStudent(Long id) {
+        Student studentToBeDeleted = studentRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student with id "+id+" not found"));
 
-        studentRepository.deleteById(id);
-        return true;
+
+//        if(!isStudent) return false;
+
+        studentRepository.delete(studentToBeDeleted);
+
     }
 
 
 
-    public Boolean deleteStudentSoft(Long id) {
+    public void deleteStudentSoft(Long id) {
         //get
         //delete = 1
         //save
 
-         Optional<Student> existingStudent
-                 = studentRepository.findByIdAndDeletedIsFalse(id);
+        Student studentToBeDeleted = studentRepository
+                .findByIdAndDeletedIsFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student with id "+id+" not found"));
 
-         if(existingStudent.isEmpty()) {
-             return false;
-         }
 
-         Student studentToSave = existingStudent.get();
-         studentToSave.setDeleted(true);
+        studentToBeDeleted.setDeleted(true);
 
-         studentRepository.save(studentToSave);
+         studentRepository.save(studentToBeDeleted);
 
-         return true;
 
 
 
